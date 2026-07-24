@@ -8,7 +8,7 @@ object Form1: TForm1
   ClientHeight = 365
   ClientWidth = 565
   Position = poWorkAreaCenter
-  LCLVersion = '4.0.0.4'
+  LCLVersion = '3.4.0.0'
   object Label15: TLabel
     Left = 8
     Height = 15

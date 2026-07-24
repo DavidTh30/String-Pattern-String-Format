@@ -171,6 +171,7 @@ begin
   P:=Pointer(1234567);
   Memo1.Clear;
   Try
+    Memo1.Append(Format('OnReceive: %d %d %d %s = %s',[1, 2, 3, '##', '$$']));
     Fmt:='[%s.%s.%s.%s]';S:=Format(fmt,['192','168','0','150']);Memo1.Append(Fmt+' = '+s);
     Fmt:='[%d.%d.%d.%d]';S:=Format(fmt,[192,168,0,150]);Memo1.Append(Fmt+' = '+s);
     Fmt:='[%.3d.%.3d.%.3d.%.3d]';S:=Format(fmt,[192,168,0,150]);Memo1.Append(Fmt+' = '+s);
