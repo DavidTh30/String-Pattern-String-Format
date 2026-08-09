@@ -2,6 +2,8 @@
 
 Keyword:
   - IP address format
+  - HexaDecimal format
+  - Pointer format
   - Scientific (exponential) format
   - Column format
   - TAB to string
