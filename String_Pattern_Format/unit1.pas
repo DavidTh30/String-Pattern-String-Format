@@ -19,6 +19,7 @@ type
     Button4: TButton;
     Button5: TButton;
     Button6: TButton;
+    Button7: TButton;
     Edit5: TEdit;
     Edit6: TEdit;
     Label14: TLabel;
@@ -34,6 +35,7 @@ type
     procedure Button4Click(Sender: TObject);
     procedure Button5Click(Sender: TObject);
     procedure Button6Click(Sender: TObject);
+    procedure Button7Click(Sender: TObject);
     procedure Edit5EditingDone(Sender: TObject);
     procedure Edit6EditingDone(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -66,6 +68,16 @@ implementation
 {$R *.lfm}
 
 { TForm1 }
+
+function UStrToHex(const S: UnicodeString): string;
+var
+  i: Integer;
+begin
+  Result := '';
+  for i := 1 to Length(S) do
+    Result := Result + IntToHex(Ord(S[i]), 4); // 4 digits for UTF-16 code unit
+end;
+
 Function TForm1.RepairIPAddress(s: string):string;
 var
   i:integer;
@@ -455,6 +467,41 @@ begin
   Fmt:='[%0:-10x]';S:=Format (Fmt,[10]);Memo1.Append(Fmt+' = '+s);
   Fmt:='[%0:-10.4x]';S:=Format (fmt,[10]);Memo1.Append(Fmt+' = '+s);
   Fmt:='[%-*.*x]';S:=Format (fmt,[4,5,10]);Memo1.Append(Fmt+' = '+s);
+end;
+
+procedure TForm1.Button7Click(Sender: TObject);
+var
+  WideChar_:WideChar;
+  us_:UnicodeString;
+begin
+  Memo1.Clear;
+  Memo1.Append('⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⢿⠿⠿⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿');
+  Memo1.Append('⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⡋⠕⠠⠐⠀⠂⠀⢀⠀⢄⠈⠛⠻⣿⣿⣿⣿⣿⣿⣿');
+  Memo1.Append('⣿⣿⣿⣿⣿⣿⣿⡻⣌⠶⣉⠄⡄⠆⠀⠀⡀⠀⠄⠠⠈⢄⠡⢌⠻⣿⣿⣿⣿⣿');
+  Memo1.Append('⣿⣿⣿⣿⣿⡟⣧⣓⢎⠖⣡⢘⠠⡐⠄⠡⠀⠤⠀⠂⠌⡀⠂⠄⢢⠙⣿⣿⣿⣿');
+  Memo1.Append('⣿⣿⣿⣿⣿⣹⢶⣭⢚⡝⢦⡋⢖⡡⢎⡰⢁⢂⢁⠊⠰⠠⢉⠂⣜⠂⢼⣿⣿⣿');
+  Memo1.Append('⣿⣿⣿⣿⡷⢯⣟⡼⣓⣮⣷⣽⣮⣵⣋⠴⣉⣦⣮⣦⣥⣅⠊⡐⢸⢣⢘⣿⣿⣿');
+  Memo1.Append('⣿⣿⣿⣿⣿⣿⢎⣷⣿⣿⣿⣿⣿⣏⠣⢽⣿⣿⣿⣿⣿⣿⣿⡔⢈⣧⣿⣿⣿⣿');
+  Memo1.Append('⣿⣿⣿⣿⣿⣟⡮⣿⣿⣿⣿⣿⣿⠃⠀⠺⣿⣿⣿⣿⣿⣿⣿⠃⣾⣿⣿⣿⣿⣿');
+  Memo1.Append('⣿⣿⣿⣿⣿⣿⡷⡹⣿⣿⣻⣿⡿⢋⢀⣤⡀⠹⢿⣿⣿⣿⡿⠃⣾⣿⣿⣿⣿⣿');
+  Memo1.Append('⣿⣿⣿⣿⣿⣿⣯⡅⠙⢫⡽⣫⠔⣸⣿⣿⣿⡄⠈⡝⡉⠉⠀⢥⣿⣿⣿⣿⣿⣿');
+  Memo1.Append('⣿⣿⣿⣿⣿⣿⣿⣾⣵⣿⣶⢣⡍⠽⠿⠿⠿⠗⠀⡌⣵⣮⣼⣿⣿⣿⣿⣿⣿⣿');
+  Memo1.Append('⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⣾⣶⣤⣤⣤⣄⡶⢾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿');
+  Memo1.Append('⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣶⣸⢩⢭⡩⣥⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿');
+  Memo1.Append('⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿');
+
+  WideChar_:=#$28FF;
+  us_:= UnicodeString(WideChar_);
+  s:=UStrToHex(us_);
+  Memo1.Append('⣿'+us_+us_);
+  Memo1.Append('UnicodeString to Hex= '+s); //28ff
+  s:='⣿';
+  s:=UStrToHex(s);
+  Memo1.Append('String to Hex= '+s); //28ff
+  Memo1.Append(s);
+  WideChar_:=#$28FF;
+  Memo1.Append(UnicodeChar(WideChar_)+UnicodeString(WideChar_));
+
 end;
 
 end.
