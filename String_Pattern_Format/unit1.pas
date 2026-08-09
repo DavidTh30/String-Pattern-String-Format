@@ -14,6 +14,9 @@ type
 
   TForm1 = class(TForm)
     Button1: TButton;
+    Button2: TButton;
+    Button3: TButton;
+    Button4: TButton;
     Edit5: TEdit;
     Edit6: TEdit;
     Label14: TLabel;
@@ -24,18 +27,35 @@ type
     PopupMenu_IP: TPopupMenu;
     TCP_UDPPort1: TTCP_UDPPort;
     procedure Button1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
+    procedure Button4Click(Sender: TObject);
     procedure Edit5EditingDone(Sender: TObject);
     procedure Edit6EditingDone(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
 
   public
     Function RepairIPAddress(s: string):string;
   end;
 
+const
+  TAB = #9;
+
 var
   Form1: TForm1;
   P : Pointer;
   fmt,S : string;
+  FormatStrings : Array[1..9] of string = (
+        '',
+        '0',
+        '0.00',
+        '#.##',
+        '#,##0.00',
+        '#,##0.00;(#,##0.00)',
+        '#,##0.00;;Zero',
+        '0.000E+00',
+        '#.###E-0');
 
 implementation
 
@@ -149,6 +169,11 @@ procedure TForm1.Edit6EditingDone(Sender: TObject);
 begin
   Edit6.Caption:=RepairIPAddress(Edit6.Caption);
   TCP_UDPPort1.Host:=Edit6.Caption;
+end;
+
+procedure TForm1.FormCreate(Sender: TObject);
+begin
+
 end;
 
 procedure TForm1.Edit5EditingDone(Sender: TObject);
@@ -269,6 +294,147 @@ begin
       end;
   end;
 
+end;
+
+procedure TForm1.Button2Click(Sender: TObject);
+var
+  s: string;
+  Float_:extended;
+begin
+  Memo1.Clear;
+  // Format with 2 decimal places in scientific notation
+  s := Format('%.2e', [0.1]);
+  Memo1.Append(s); // Outputs: 1.00e-01
+
+  s := FloatToStrF(0.1, ffExponent, 2, 3);
+  Memo1.Append(s); // Outputs: 1.00e-01
+
+  Float_:=-2000;
+  s := Format('%.2e', [Float_]);
+  Memo1.Append(s); // Outputs: -2.0E+003
+
+  Float_:=-3000;
+  s := FloatToStrF(Float_, ffExponent, 2, 2);
+  Memo1.Append(s); // Outputs: -2.0E+03
+
+  Float_:=1.1E-5;
+  s := FloatToStrF(Float_, ffExponent, 2, 2);
+  Memo1.Append(s); // Outputs: 1.1E-05
+
+  s:=FormatFloat(FormatStrings[9],-0.5);
+  Memo1.Append(s); // Outputs: -5E-1
+end;
+
+procedure TForm1.Button3Click(Sender: TObject);
+var
+  title,  title2,
+  underline,
+  line, row1, row2, row3,
+  fmt : string;
+  i : integer;
+begin
+  Memo1.Clear;
+
+  fmt := '%-12s';
+  title := format(fmt,['Column 1']) + format(fmt,['Column 2']);
+  for i := 1 to 12 do underline := underline + '-';
+  underline := underline + underline ;
+  fmt := '%-12d';
+  line := format(fmt,[15]) + format(fmt,[8]) ;
+  fmt := '%12s';
+  title2 := format(fmt,['Column 1']) + format(fmt,['Column 2']);
+  fmt := '%12d';
+  row1 := format(fmt,[15]) + format(fmt,[8]);
+  row2 := format(fmt,[1005]) + format(fmt,[809]);
+  fmt := '%12.5d';
+  row3 := format(fmt,[1005]) + format(fmt,[809]);
+  Memo1.Lines.Add( title );
+  Memo1.Lines.Add( underline );
+  Memo1.Lines.Add( line );
+
+  Memo1.Lines.Add( '' );
+  Memo1.Lines.Add( title2 );
+  Memo1.Lines.Add( underline );
+  Memo1.Lines.Add( row1 );
+  Memo1.Lines.Add( row2 );
+  Memo1.Lines.Add( row3 );
+
+  Memo1.Lines.Add( '' );
+  Memo1.Lines.Add( 'Tab to string [#9]:' );
+  fmt := '%s';
+  title := format(fmt,['Column 1']) +#9+ format(fmt,['Column 2']);
+  fmt := '%-12d';
+  line := format(fmt,[15]) +#9+ format(fmt,[8]) ;
+  Memo1.Lines.Add( title );
+  Memo1.Lines.Add( underline );
+  Memo1.Lines.Add( line );
+
+  Memo1.Lines.Add( '' );
+  Memo1.Lines.Add( 'Tab to string [^I]:' );
+  fmt := '%s';
+  title := format(fmt,['Column 1']) +^I+ format(fmt,['Column 2']);
+  fmt := '%-12d';
+  line := format(fmt,[15]) +^I+ format(fmt,[8]) ;
+  Memo1.Lines.Add( title );
+  Memo1.Lines.Add( underline );
+  Memo1.Lines.Add( line );
+
+  Memo1.Lines.Add( '' );
+  Memo1.Lines.Add( 'Tab to string [TAB]:' );
+  fmt := '%s';
+  title := format(fmt,['Column 1']) +TAB+ format(fmt,['Column 2']);
+  fmt := '%-12d';
+  line := format(fmt,[15]) +TAB+ format(fmt,[8]) ;
+  Memo1.Lines.Add( title );
+  Memo1.Lines.Add( underline );
+  Memo1.Lines.Add( line );
+end;
+
+procedure TForm1.Button4Click(Sender: TObject);
+var
+  fmt,line : string;
+begin
+  Memo1.Clear;
+
+  fmt := '%-5s';
+  line := format(fmt,['d']) + format(fmt,['Decimal (integer)']);
+  Memo1.Lines.Add( line );
+  line := format(fmt,['e']) + format(fmt,['Scientific']);
+  Memo1.Lines.Add( line );
+  line := format(fmt,['f']) + format(fmt,['Fixed']);
+  Memo1.Lines.Add( line );
+  line := format(fmt,['g']) + format(fmt,['General']);
+  Memo1.Lines.Add( line );
+  line := format(fmt,['m']) + format(fmt,['Money']);
+  Memo1.Lines.Add( line );
+  line := format(fmt,['n']) + format(fmt,['Number (floating)']);
+  Memo1.Lines.Add( line );
+  line := format(fmt,['p']) + format(fmt,['Pointer']);
+  Memo1.Lines.Add( line );
+  line := format(fmt,['s']) + format(fmt,['String']);
+  Memo1.Lines.Add( line );
+  line := format(fmt,['u']) + format(fmt,['Unsigned decimal']);
+  Memo1.Lines.Add( line );
+  line := format(fmt,['x']) + format(fmt,['Hexadecimal']);
+  Memo1.Lines.Add( line );
+  Memo1.Lines.Add('');
+  Memo1.Lines.Add('Integer formatting');
+  line := format(fmt,['%d']) + format(fmt,['Will print the integer as it is.']);
+  Memo1.Lines.Add( line );
+  line := format(fmt,['%8d']) + format(fmt,['Will print the integer as it is. If the number of digits is less than 8, the output will be padded on the left.']);
+  Memo1.Lines.Add( line );
+  line := format(fmt,['%-8d']) + format(fmt,['Will print the integer as it is. If the number of digits is less than 8, the output will be padded on the right.']);
+  Memo1.Lines.Add( line );
+  line := format(fmt,['%.8d']) + format(fmt,['Will print the integer as it is. If the number of digits is less than 8, the output will be padded on the left with zeroes.']);
+  Memo1.Lines.Add( line );
+  Memo1.Lines.Add('');
+  Memo1.Lines.Add('String formatting');
+  line := format(fmt,['%s']) + format(fmt,['Will print the string as it is.']);
+  Memo1.Lines.Add( line );
+  line := format(fmt,['%8s']) + format(fmt,['Will print the string as it is. If the string has less than 8 characters, the output will be space-padded on the left (right-justified).']);
+  Memo1.Lines.Add( line );
+  line := format(fmt,['%-8s']) + format(fmt,['Will print the string as it is. If the string has less than 8 characters, the output will be space-padded on the right (left-justified).']);
+  Memo1.Lines.Add( line );
 end;
 
 end.
