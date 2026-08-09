@@ -17,6 +17,8 @@ type
     Button2: TButton;
     Button3: TButton;
     Button4: TButton;
+    Button5: TButton;
+    Button6: TButton;
     Edit5: TEdit;
     Edit6: TEdit;
     Label14: TLabel;
@@ -30,6 +32,8 @@ type
     procedure Button2Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
     procedure Button4Click(Sender: TObject);
+    procedure Button5Click(Sender: TObject);
+    procedure Button6Click(Sender: TObject);
     procedure Edit5EditingDone(Sender: TObject);
     procedure Edit6EditingDone(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -193,7 +197,6 @@ end;
 
 procedure TForm1.Button1Click(Sender: TObject);
 begin
-  P:=Pointer(1234567);
   Memo1.Clear;
   Try
     Memo1.Append(Format('OnReceive: %d %d %d %s = %s',[1, 2, 3, '##', '$$']));
@@ -227,24 +230,7 @@ begin
     Fmt:='[%0:-10d]';S:=Format (Fmt,[10]);Memo1.Append(Fmt+' = '+s);
     Fmt:='[%0:-10.4d]';S:=Format (fmt,[10]);Memo1.Append(Fmt+' = '+s);
     Fmt:='[%-*.*d]';S:=Format (fmt,[4,5,10]);Memo1.Append(Fmt+' = '+s);
-    Fmt:='[%x]';S:=Format (Fmt,[10]);Memo1.Append(Fmt+' = '+s);
-    Fmt:='[%10x]';S:=Format (Fmt,[10]);Memo1.Append(Fmt+' = '+s);
-    Fmt:='[%10.4x]';S:=Format (Fmt,[10]);Memo1.Append(Fmt+' = '+s);
-    Fmt:='[%0:x]';S:=Format (Fmt,[10]);Memo1.Append(Fmt+' = '+s);
-    Fmt:='[%0:10x]';S:=Format (Fmt,[10]);Memo1.Append(Fmt+' = '+s);
-    Fmt:='[%0:10.4x]';S:=Format (Fmt,[10]);Memo1.Append(Fmt+' = '+s);
-    Fmt:='[%0:-10x]';S:=Format (Fmt,[10]);Memo1.Append(Fmt+' = '+s);
-    Fmt:='[%0:-10.4x]';S:=Format (fmt,[10]);Memo1.Append(Fmt+' = '+s);
-    Fmt:='[%-*.*x]';S:=Format (fmt,[4,5,10]);Memo1.Append(Fmt+' = '+s);
-    Fmt:='[0x%p]';S:=Format (Fmt,[P]);Memo1.Append(Fmt+' = '+s);
-    Fmt:='[0x%10p]';S:=Format (Fmt,[P]);Memo1.Append(Fmt+' = '+s);
-    Fmt:='[0x%10.4p]';S:=Format (Fmt,[P]);Memo1.Append(Fmt+' = '+s);
-    Fmt:='[0x%0:p]';S:=Format (Fmt,[P]);Memo1.Append(Fmt+' = '+s);
-    Fmt:='[0x%0:10p]';S:=Format (Fmt,[P]);Memo1.Append(Fmt+' = '+s);
-    Fmt:='[0x%0:10.4p]';S:=Format (Fmt,[P]);Memo1.Append(Fmt+' = '+s);
-    Fmt:='[0x%0:-10p]';S:=Format (Fmt,[P]);Memo1.Append(Fmt+' = '+s);
-    Fmt:='[0x%0:-10.4p]';S:=Format (fmt,[P]);Memo1.Append(Fmt+' = '+s);
-    Fmt:='[%-*.*p]';S:=Format (fmt,[4,5,P]);Memo1.Append(Fmt+' = '+s);
+
     Fmt:='[%s]';S:=Format(fmt,['This is a string']);Memo1.Append(Fmt+' = '+s);
     fmt:='[%0:s]';s:=Format(fmt,['This is a string']);Memo1.Append(Fmt+' = '+s);
     fmt:='[%0:18s]';s:=Format(fmt,['This is a string']);Memo1.Append(Fmt+' = '+s);
@@ -396,6 +382,9 @@ var
 begin
   Memo1.Clear;
 
+  Memo1.Lines.Add('https://lazarus-ccr.sourceforge.io/docs/rtl/sysutils/format.html');
+  Memo1.Lines.Add('https://wiki.freepascal.org/Format_function');
+  Memo1.Lines.Add('');
   fmt := '%-5s';
   line := format(fmt,['d']) + format(fmt,['Decimal (integer)']);
   Memo1.Lines.Add( line );
@@ -435,6 +424,37 @@ begin
   Memo1.Lines.Add( line );
   line := format(fmt,['%-8s']) + format(fmt,['Will print the string as it is. If the string has less than 8 characters, the output will be space-padded on the right (left-justified).']);
   Memo1.Lines.Add( line );
+end;
+
+procedure TForm1.Button5Click(Sender: TObject);
+begin
+  P:=Pointer(1234567);
+  Memo1.Clear;
+  Memo1.Append('Pointer format');
+  Fmt:='[0x%p]';S:=Format (Fmt,[P]);Memo1.Append(Fmt+' = '+s);
+  Fmt:='[0x%10p]';S:=Format (Fmt,[P]);Memo1.Append(Fmt+' = '+s);
+  Fmt:='[0x%10.4p]';S:=Format (Fmt,[P]);Memo1.Append(Fmt+' = '+s);
+  Fmt:='[0x%0:p]';S:=Format (Fmt,[P]);Memo1.Append(Fmt+' = '+s);
+  Fmt:='[0x%0:10p]';S:=Format (Fmt,[P]);Memo1.Append(Fmt+' = '+s);
+  Fmt:='[0x%0:10.4p]';S:=Format (Fmt,[P]);Memo1.Append(Fmt+' = '+s);
+  Fmt:='[0x%0:-10p]';S:=Format (Fmt,[P]);Memo1.Append(Fmt+' = '+s);
+  Fmt:='[0x%0:-10.4p]';S:=Format (fmt,[P]);Memo1.Append(Fmt+' = '+s);
+  Fmt:='[%-*.*p]';S:=Format (fmt,[4,5,P]);Memo1.Append(Fmt+' = '+s);
+end;
+
+procedure TForm1.Button6Click(Sender: TObject);
+begin
+  Memo1.Clear;
+  Memo1.Append('HexaDecimal format');
+  Fmt:='[%x]';S:=Format (Fmt,[10]);Memo1.Append(Fmt+' = '+s);
+  Fmt:='[%10x]';S:=Format (Fmt,[10]);Memo1.Append(Fmt+' = '+s);
+  Fmt:='[%10.4x]';S:=Format (Fmt,[10]);Memo1.Append(Fmt+' = '+s);
+  Fmt:='[%0:x]';S:=Format (Fmt,[10]);Memo1.Append(Fmt+' = '+s);
+  Fmt:='[%0:10x]';S:=Format (Fmt,[10]);Memo1.Append(Fmt+' = '+s);
+  Fmt:='[%0:10.4x]';S:=Format (Fmt,[10]);Memo1.Append(Fmt+' = '+s);
+  Fmt:='[%0:-10x]';S:=Format (Fmt,[10]);Memo1.Append(Fmt+' = '+s);
+  Fmt:='[%0:-10.4x]';S:=Format (fmt,[10]);Memo1.Append(Fmt+' = '+s);
+  Fmt:='[%-*.*x]';S:=Format (fmt,[4,5,10]);Memo1.Append(Fmt+' = '+s);
 end;
 
 end.
