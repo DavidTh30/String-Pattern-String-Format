@@ -1,0 +1,54 @@
+object Form1: TForm1
+  Left = 295
+  Height = 340
+  Top = 84
+  Width = 565
+  BorderIcons = [biSystemMenu, biMinimize]
+  Caption = 'String convetor'
+  ClientHeight = 340
+  ClientWidth = 565
+  Position = poWorkAreaCenter
+  LCLVersion = '4.4.0.0'
+  OnCreate = FormCreate
+  object Memo1: TMemo
+    AnchorSideTop.Control = Owner
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    AnchorSideBottom.Control = Owner
+    AnchorSideBottom.Side = asrBottom
+    Left = 248
+    Height = 340
+    Top = 0
+    Width = 317
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    ScrollBars = ssAutoBoth
+    TabOrder = 0
+    WordWrap = False
+  end
+  object Button1: TButton
+    Left = 24
+    Height = 34
+    Top = 16
+    Width = 208
+    Caption = 'utf 16 convert'
+    TabOrder = 1
+    OnClick = Button1Click
+  end
+  object Button2: TButton
+    Left = 24
+    Height = 34
+    Top = 104
+    Width = 208
+    Caption = 'Test convertor'
+    TabOrder = 2
+    OnClick = Button2Click
+  end
+  object Edit1: TEdit
+    Left = 24
+    Height = 23
+    Top = 80
+    Width = 154
+    TabOrder = 3
+    Text = '⣿⣿⣿⣿'
+  end
+end
